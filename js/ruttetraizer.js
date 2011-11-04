@@ -118,8 +118,9 @@ $(document).ready( function() {
 function initWebGL() {
 
 	//init camera
-	_camera = new THREE.Camera(75, 16/9, 1, 10000);
-	_camera.position.z = 3000;
+	_camera = new THREE.Camera(75, 16/9, 1, 7000);
+	_camera.position.z = -3000;
+	_camera.rotation.y = 180;
 	_scene = new THREE.Scene();
 
 	//init renderer
@@ -175,7 +176,7 @@ function createLines() {
 		depthTest: false,
 		vertexColors: true
 	} );
-
+	
 	// go through the image pixels
 	for(y = 0; y < _imageHeight; y+= _guiOptions.scanStep) {
 		var geometry = new THREE.Geometry();
@@ -245,7 +246,6 @@ function render() {
 	var xrot = _mouseX/_stageWidth * Math.PI*2 + Math.PI;
 	var yrot = _mouseY/_stageHeight* Math.PI*2 + Math.PI;
 	
-	//_camera.lookAt(_lineHolder);
 	_lineHolder.rotation.x += (-yrot - _lineHolder.rotation.x) * 0.3;
 	_lineHolder.rotation.y += (xrot - _lineHolder.rotation.y) * 0.3;
 	
@@ -298,7 +298,7 @@ function doLayout() {
 }
 
 // Returns a hexidecimal color for a given pixel in the pixel array.
-function getColor(x, y) {
+function getColor(x,y) {
 	var base = (Math.floor(y) * _imageWidth + Math.floor(x)) * 4;
 	var c = {
 		r: _pixels[base + 0],
@@ -337,7 +337,7 @@ function loadURL() {
 	_inputImage = new Image();
 	timg = _guiOptions.ImageURL;
 	
-	_camera.up.set(0,-1,0);
+	//_camera.up.set(0,-1,0);
 	_inputImage.src = (timg);
 	$('#orig').attr("href",timg);
 	
@@ -345,6 +345,8 @@ function loadURL() {
 
 	_inputImage.onload = function() {
 		onImageLoaded();
+		//_lineHolder.rotation.y = 180;
+		_camera.lookAt(_lineHolder);
 		//_enableMouseMove = false;
 	};
 }
