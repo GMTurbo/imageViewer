@@ -7,6 +7,7 @@
 		<link href='http://fonts.googleapis.com/css?family=Lobster&subset=cyrillic,latin&text=Rutt-Etra-IzerDropImageHere' rel='stylesheet' type='text/css'>
 		<link href="css/style.css" rel="stylesheet" type="text/css">
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+		<link href="css/loadbar/progress-polyfill.css" rel="stylesheet" />
 	</head>
 	<body>
 		<div id="controls">
@@ -41,6 +42,9 @@
 			<h3>X</h3>
 			<div id="fps-container">
 			</div>
+			<div id = "progressBar">
+				<progress max="100"></progress>
+			</div>
 		</div>
 		<div id="container">
 			<div id="stage">
@@ -49,6 +53,7 @@
 				</div>
 			</div>
 		</div>
+		
 		<script src="js/Three.js"></script>
 		<script src="js/Detector.js"></script>
 		<script src="js/RequestAnimationFrame.js"></script>
@@ -56,6 +61,7 @@
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
 		<script src="js/jquery.mousewheel.min.js"></script>
 		<script src="js/dat.gui.js"></script>
+		<script src="js/loadbar/progress-polyfill.js"></script>
 		<script src="js/ruttetraizer.js?nc=1"></script>
 	</body>
 </html>

@@ -32,9 +32,9 @@ _guiOptions  = {
 	stageSize:	 	1,
 	scale:	 		3.2,
 	scanStep: 		1,
-	lineThickness:	.6,
+	lineThickness:	0.8,
 	opacity: 		1.0,
-	depth: 			64,
+	depth: 			50,
 	autoRotate: 	true,
 	skookum: 'mark',
 	ImageURL: 'enter text'
@@ -81,7 +81,7 @@ $(document).ready( function() {
 
 	$(window).bind('resize', doLayout);
 
-
+	$('#progressBar').hide(500).css({visibility: "hidden", display: ""});
 	// stop the user getting a text cursor
 	document.onselectstart = function() {
 		return false;
@@ -134,7 +134,6 @@ function initWebGL() {
 	_scene.add(_lineHolder);
 
 	doLayout();
-
 	animate();
 }
 
@@ -225,10 +224,10 @@ function onKeyDown(evt) {
 	
 	switch(evt.keyCode){
 		case 40: // keydown
-		_camera.position.z += 100;
+		_camera.position.z -= 100;
 		break;
 		case 38: // keyup
-		_camera.position.z -= 100;
+		_camera.position.z += 100;
 		break;
 	}
 }
@@ -333,6 +332,7 @@ function loadSample() {
 }
 
 function loadURL() {
+	$('#progressBar').hide(500).css({visibility: "visible", display: ""});
 	_enableMouseMove = false;
 	_inputImage = new Image();
 	timg = _guiOptions.ImageURL;
@@ -345,6 +345,7 @@ function loadURL() {
 
 	_inputImage.onload = function() {
 		onImageLoaded();
+		$('#progressBar').hide(500).css({visibility: "hidden", display: ""});
 		//_lineHolder.rotation.y = 180;
 		_camera.lookAt(_lineHolder);
 		//_enableMouseMove = false;
