@@ -124,22 +124,31 @@ function initWebGL() {
 	_scene = new THREE.Scene();
 
 	//init renderer
-	_renderer = new THREE.WebGLRenderer({antialias: true,clearAlpha: 1,sortObjects: false,sortElements: false});
+	_renderer = new THREE.WebGLRenderer({antialias: true, clearAlpha: 1, clearColor: 0xffffff, sortObjects: false,sortElements: false});
 	
 	//_renderer = new THREE.SvgRenderer({antialias: true,clearAlpha: 1,sortObjects: false,sortElements: false});
 	
 	//renderer = new THREE.CanvasRenderer();
-
+	
+	
 	_lineHolder = new THREE.Object3D();
 	_scene.add(_lineHolder);
-
+	
 	doLayout();
 	animate();
 }
-
+function clearCanvas(context, canvas) {
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  var w = canvas.width;
+  canvas.width = 1;
+  canvas.width = w;
+}
 function onImageLoaded() {
 
 	// load image into canvas pixels
+	//if(_context&&_canvas){
+	//	clearCanvas(_context, _canvas);
+	//}
 	_imageWidth = _inputImage.width;
 	_imageHeight = _inputImage.height;
 	_canvas	= document.createElement('canvas');
@@ -147,7 +156,18 @@ function onImageLoaded() {
 	_canvas.height = _imageHeight;
 	_context = _canvas.getContext('2d');
 	_context.drawImage(_inputImage, 0, 0);
-	_pixels	= _context.getImageData(0,0,_imageWidth,_imageHeight).data;
+	try{ _pixels	= _context.getImageData(0,0,_imageWidth,_imageHeight).data; }
+	catch(e)
+	{
+		$('#progressBar').hide(500).css({visibility: "hidden", display: ""});
+		if (typeof e.code == "number") {
+		        if (e.code< 1000) {
+		            alert("Dom Exception... you have to turn on the -disable-web-security flag in chrome to load images.\nmac: use terminal\nopen /Applications/Google\ Chrome.app --args -disable-web-security")
+		        } else {
+		            alert("Dom Exception... you have to turn on the -disable-web-security flag in chrome to load images.")
+		        }
+		    }
+	}
 	_enableMouseMove = false;
 	createLines();
 }
@@ -162,11 +182,13 @@ function createLines() {
 
 	var x = 0, y = 0;
 
-	if (_lineGroup)
-		_scene.removeObject(_lineGroup);
+	if (_lineGroup){
+		_scene.remove(_lineGroup);
+		//_lineHolder.clear();
+	}
 
 	_lineGroup = new THREE.Object3D();
-
+	_scene.update();
 	_material = new THREE.LineBasicMaterial({
 		color: 0xffffff,
 		opacity: _guiOptions.opacity,
@@ -224,10 +246,24 @@ function onKeyDown(evt) {
 	
 	switch(evt.keyCode){
 		case 40: // keydown
-		_camera.position.z -= 100;
+			if(!evt.ctrlKey)
+				_camera.position.z -= 100;
+			else
+				_camera.position.y -= 100;
 		break;
 		case 38: // keyup
-		_camera.position.z += 100;
+		if(!evt.ctrlKey)
+			_camera.position.z += 100;
+		else
+			_camera.position.y += 100;
+		break;
+		case 37://left
+			if(evt.ctrlKey)
+				_camera.position.x += 100;
+		break;
+		case 39: //right
+			if(evt.ctrlKey)
+				_camera.position.x -= 100;
 		break;
 	}
 }
@@ -313,42 +349,21 @@ function getBrightness(c) {
 	return ( 0.34 * c.r + 0.5 * c.g + 0.16 * c.b );
 };
 
-function loadSample() {
-	_enableMouseMove = false;
-	_inputImage = new Image();
-	timg = "img/img.php?t=" + _guiOptions.skookum;
-	
-	
-	_inputImage.src = (timg);
-	
-	$('#orig').attr("href",timg);
-	
-	//$(".guidat-controller option").html('skookum');
-
-	_inputImage.onload = function() {
-		onImageLoaded();
-		//_enableMouseMove = false;
-	};
-}
-
 function loadURL() {
+	//_renderer.clear();
 	$('#progressBar').hide(500).css({visibility: "visible", display: ""});
 	_enableMouseMove = false;
 	_inputImage = new Image();
 	timg = _guiOptions.ImageURL;
-	
-	//_camera.up.set(0,-1,0);
+
 	_inputImage.src = (timg);
 	$('#orig').attr("href",timg);
-	
-	//$(".guidat-controller option").html('skookum');
 
 	_inputImage.onload = function() {
 		onImageLoaded();
 		$('#progressBar').hide(500).css({visibility: "hidden", display: ""});
-		//_lineHolder.rotation.y = 180;
+		_lineHolder.rotation.set(0,0,0);
 		_camera.lookAt(_lineHolder);
-		//_enableMouseMove = false;
 	};
 }
 
