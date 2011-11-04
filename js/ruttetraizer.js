@@ -182,7 +182,7 @@ function createLines() {
 		for(x = 0; x < _imageWidth ; x+= _guiOptions.scanStep) {
 			var color = new THREE.Color(getColor(x, y));
 			var brightness = getBrightness(color);
-			var posn = new THREE.Vector3(x -_imageWidth/2,y - _imageHeight/2, brightness * _guiOptions.depth - _guiOptions.depth/2);
+			var posn = new THREE.Vector3(x -_imageWidth/2,y - _imageHeight/2, -brightness * _guiOptions.depth + _guiOptions.depth/2);
 			geometry.vertices.push(new THREE.Vertex(posn));
 			geometry.colors.push(color);
 		}
