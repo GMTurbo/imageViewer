@@ -32,7 +32,7 @@ _guiOptions  = {
 	stageSize:	 	1,
 	scale:	 		3.2,
 	scanStep: 		1,
-	lineThickness:	0.8,
+	lineThickness:	1.0,
 	opacity: 		1.0,
 	depth: 			50,
 	autoRotate: 	true,
