@@ -124,7 +124,7 @@ function initWebGL() {
 	_scene = new THREE.Scene();
 
 	//init renderer
-	_renderer = new THREE.WebGLRenderer({antialias: true, clearAlpha: 1, clearColor: 0xffffff, sortObjects: false,sortElements: false});
+	_renderer = new THREE.WebGLRenderer({antialias: true, clearAlpha: 1, clearColor: 0x000000, sortObjects: false, sortElements: false});
 	
 	//_renderer = new THREE.SvgRenderer({antialias: true,clearAlpha: 1,sortObjects: false,sortElements: false});
 	
@@ -156,7 +156,9 @@ function onImageLoaded() {
 	_canvas.height = _imageHeight;
 	_context = _canvas.getContext('2d');
 	_context.drawImage(_inputImage, 0, 0);
-	try{ _pixels	= _context.getImageData(0,0,_imageWidth,_imageHeight).data; }
+	try{ 
+		_pixels = _context.getImageData(0,0,_imageWidth,_imageHeight).data;
+		}
 	catch(e)
 	{
 		$('#progressBar').hide(500).css({visibility: "hidden", display: ""});
