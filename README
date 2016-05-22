@@ -7,3 +7,7 @@ for mac:
 
 for pc:
 	edit chrome shortcut to have -disable-web-security
+	
+	
+if you're ok loading "unsafe scripts", you can try it out [here](
+http://htmlpreview.github.io/?https://github.com/GMTurbo/imageviewer/blob/master/index.html)
